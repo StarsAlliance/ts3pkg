@@ -30,7 +30,7 @@ initdir = 'etc/init.d'
 mkdir pkg-ts3server-$ver-$tsarch
 cd pkg-ts3server-$ver-$tsarch
 mkdir DEBIAN
-mkdir etc/init.d
+mkdir $initdir
 mkdir $binarydir
 mkdir $docdir
 mv /tmp/ts3server $initdir/ts3server
