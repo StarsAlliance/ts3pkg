@@ -11,12 +11,16 @@ case $dfamily in
 	*) read -p "Choose your distro [debian/ubuntu] " distro ;;
 esac
 read -p "Choose package architecture [i386/amd64] " tsarch
-if [$tsarch -eq "i386"];
+if [ "$tsarch" = "i386" ];
 then ts86arch="x86"
 else ts86arch="x64"
 fi
 #Start of executing commands
-if [[$dev -eq "Y" || $dev -eq "y"]]; 
+case $dev in
+	y|Y*)  apt-get -y install dpkg debconf debhelper lintian fakeroot ;;
+	*) echo Package installation skipped ;;
+esac
+if [[ "$dev" = "Y" || "$dev" = "y" ]]; 
 then apt-get -y install dpkg debconf debhelper lintian fakeroot
 fi
 cp initd/ts3server-$dvendor.initd /tmp/ts3server
@@ -39,7 +43,7 @@ mv /tmp/ts3server $initdir/ts3server
 
 #Get it from the net
 cd /usr/src
-wget -i http://dl.4players.de/ts/releases/$ver/teamspeak3-server_linux-$ts86arch-$ver.tar.gz
+wget http://dl.4players.de/ts/releases/$ver/teamspeak3-server_linux-$ts86arch-$ver.tar.gz
 tar xvfz teamspeak3-server_linux-$ts86arch-$ver.tar.gz
 cd teamspeak3-server_linux-$ts86arch-$ver
 
