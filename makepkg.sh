@@ -11,21 +11,24 @@ case $dfamily in
 	*) read -p "Choose your distro [debian/ubuntu] " distro ;;
 esac
 read -p "Choose package architecture [i386/amd64] " tsarch
-if [$tsarch="i386"]; then ts86arch="x86"; else ts86arch="x64";
-
+if [$tsarch -eq "i386"];
+then ts86arch="x86"
+else ts86arch="x64"
+fi
 #Start of executing commands
-if [[$dev="Y" || $dev="y";]]; then apt-get -y install dpkg debconf debhelper lintian fakeroot
+if [[$dev -eq "Y" || $dev -eq "y"]]; 
+then apt-get -y install dpkg debconf debhelper lintian fakeroot
 fi
 cp initd/ts3server-$dvendor.initd /tmp/ts3server
-cp ~/control /tmp/control
+cp control /tmp/control
 sed -i -e "s/$ver/"$ver"/" /tmp/control/control-$distro
 sed -i -e "s/$tsarch/"$tsarch"/" /tmp/control/control-$distro
 cd /usr/src
 
 #Creating package directory and structure
-binarydir = "usr/bin/mh/ts3server"
-docdir = "usr/share/doc/ts3server"
-initdir = "etc/init.d"
+binarydir="usr/bin/mh/ts3server"
+docdir="usr/share/doc/ts3server"
+initdir="etc/init.d"
 mkdir pkg-ts3server-$ver-$tsarch
 cd pkg-ts3server-$ver-$tsarch
 mkdir DEBIAN
@@ -63,4 +66,3 @@ mv pkg-ts3server-$ver-$tsarch.deb /opt/ts3server-$ver-$tsarch
 rm -rf /usr/src/pkg-ts3server-$ver-$tsarch
 rm -rf /usr/src/teamspeak3-server_linux-$ts86arch-$ver
 rm -rf /usr/src/teamspeak3-server_linux-$ts86arch-$ver.tar.gz
-
